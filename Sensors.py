@@ -58,6 +58,6 @@ while True:
         with open(filepath,'w') as file:
             file.write(file_headers)
     except Exception as e:
-            print(e)
+        print(e)
 
     time.sleep(1)

@@ -1,4 +1,0 @@
-* * * * * /usr/bin/python3 /home/pi/BESI-Digital_Relays/lib/Heartbeats.py
-
-30 2 * * * cd /home/pi/BESI-Digital_Relays/ && git pull || reboot
-
