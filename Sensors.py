@@ -20,9 +20,9 @@ if not deployment or not relay or not filepath:
     print("Config Error")
     exit(1)
 
-print(deployment)
-print(relay)
-print(filepath)
+print("DEPLOYMENT: " + deployment)
+print("Relay ID: " + relay)
+print("STORAGE_PATH: " + filepath)
 
 # Performs Audio Data Collection and Analysis
 def CollectSound():
@@ -30,9 +30,10 @@ def CollectSound():
     while(1):
         Sound.GetData()
 
-# Runs CollectSound in a new thread
-SoundThread = threading.Thread(target=CollectSound, args=(), daemon=True)
-SoundThread.start()
+if (len(sys.argv) == 1) or (sys.argv != "noaudio"):
+    # Runs CollectSound in a new thread
+    SoundThread = threading.Thread(target=CollectSound, args=(), daemon=True)
+    SoundThread.start()
 
 file_headers = "timestamp,light,temp,pres,hum\n"
 

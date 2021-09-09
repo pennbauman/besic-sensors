@@ -10,6 +10,8 @@ except:
     import lib.config as config
     from lib.pyAudioAnalysis import ShortTermFeatures
 
+from ctypes import *
+from contextlib import contextmanager
 import pyaudio
 import numpy as np
 
@@ -20,8 +22,22 @@ CHUNKSIZE = 512   # fixed chunk size
 RATE = 8000      # 16kHz Sampling rate
 SAMPLE_DUR = 0.5 # 250ms sampling with 50% overlap
 
+# suppress PyAudio / Alsa error messages
+ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+def error_ignorer(filename, line, function, err, fmt):
+    pass
+c_error_handler = ERROR_HANDLER_FUNC(error_ignorer)
+
+@contextmanager
+def noalsaerr():
+    asound = cdll.LoadLibrary('libasound.so')
+    asound.snd_lib_error_set_handler(c_error_handler)
+    yield
+    asound.snd_lib_error_set_handler(None)
+
 # initialize pyaudio
-p = pyaudio.PyAudio()
+with noalsaerr():
+    p = pyaudio.PyAudio()
 
 
 # -- This code snippet was used to determine ID of I2S Microphone -- #
@@ -93,7 +109,7 @@ def CombineData(ts,first_half,second_half):
     #Write to CSV File:
     try:
         with open(SOUND_PATH,'a+') as file:
-                file.write(ts)
+                file.write(str(ts))
                 for feature in F:
                     file.write(","+str(feature[0]))
                 file.write("\n")

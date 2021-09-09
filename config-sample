@@ -1,7 +1,3 @@
-#Deployment/Device Info
+# Device Info
 DEPLOYMENT = "DEPLOYMENT_ID"
 ID = 0
-
-#File Paths
-STORAGE_PATH = "/home/pi/BESI-Digital_Relays/Data/Data.csv"
-SOUND_PATH = "/home/pi/BESI-Digital_Relays/Data/Sound.csv"

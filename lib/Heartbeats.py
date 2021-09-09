@@ -31,8 +31,8 @@ def sendHeartBeat(deviceID,deployment,lux=None,tmp=None,prs=None,hum=None,bs=Fal
     try:
         with request.urlopen(req) as res:
             res.read()
-    except:
-        print("err")
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__": 
     try:
