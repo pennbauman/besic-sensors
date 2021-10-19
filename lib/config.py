@@ -26,10 +26,15 @@ try:
 except:
     pass
 
-if os.environ['DEPLOYMENT_NAME']:
+try:
     settings['DEPLOYMENT'] = os.environ['DEPLOYMENT_NAME']
-if os.environ['RELAY_ID']:
+except:
+    pass
+
+try:
     settings['ID'] = os.environ['RELAY_ID']
+except:
+    pass
 
 
 def get():

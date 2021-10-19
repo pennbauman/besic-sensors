@@ -7,15 +7,6 @@ import time, os, sys, threading
 BME.init()
 LUX.init()
 
-vars = config.get()
-
-deployment = vars['DEPLOYMENT']
-relay = vars['ID']
-
-if not deployment or not relay:
-    print("Config Error")
-    exit(1)
-
 def CollectSound():
     import lib.Sound as Sound
     while(1):

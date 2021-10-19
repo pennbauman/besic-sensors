@@ -11,12 +11,11 @@ BME.init()
 LUX.init()
 
 vars = config.get()
-
-deployment = vars['DEPLOYMENT']
-relay = vars['ID']
-filepath = vars['STORAGE_PATH']
-
-if not deployment or not relay or not filepath:
+try:
+    deployment = vars['DEPLOYMENT']
+    relay = vars['ID']
+    filepath = vars['STORAGE_PATH']
+except:
     print("Config Error")
     exit(1)
 
