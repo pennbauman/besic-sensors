@@ -5,10 +5,12 @@ from threading import Thread
 
 try:
     import config as config
-    from pyAudioAnalysis import ShortTermFeatures
+    import AudioFeatures as ShortTermFeatures
+    #from pyAudioAnalysis import ShortTermFeatures
 except:
     import lib.config as config
-    from lib.pyAudioAnalysis import ShortTermFeatures
+    import lib.AudioFeatures as ShortTermFeatures
+    #from lib.pyAudioAnalysis import ShortTermFeatures
 
 from ctypes import *
 from contextlib import contextmanager
