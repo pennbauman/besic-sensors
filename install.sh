@@ -40,13 +40,6 @@ dkms add -m snd-i2s_rpi -v 0.1.0 2>> $LOG
 dkms build -m snd-i2s_rpi -v 0.1.0 2>> $LOG
 dkms install -m snd-i2s_rpi -v 0.1.0 2>> $LOG
 
-#DRIVER_URL="https://github.com/opencardev/snd-i2s_rpi/releases/download/v0.0.2/snd-i2s-rpi-dkms_0.0.2_all.deb"
-#DRIVER_URL=$(curl -s https://api.github.com/repos/opencardev/snd-i2s_rpi/releases/latest | grep "browser_download_url.*deb" | cut -d : -f 2,3 | cut -d \" -f 2)
-#file=$(echo $DRIVER_URL | sed 's/^.*\///')
-#curl -L -o $file $DRIVER_URL
-#dpkg -i $file
-#rm -f $file
-
 echo "[$(date --rfc-3339=seconds)]: Audio driver installed" >> $LOG
 
 # Install python packages
@@ -57,16 +50,13 @@ pip3 install -r $loc/requirements.txt 2>> $LOG
 if [[ $loc == "$DIR/sensors" ]]; then
 	cp $loc/besic.sensors.service /etc/systemd/system
 	systemctl enable besic.sensors.service 2>> $LOG
-	systemctl start besic.sensors.service 2>> $LOG
 
 	echo "[$(date --rfc-3339=seconds)]: Systemd service setup" >> $LOG
 fi
 
-rm $DIR/init.sh
-
 apt -y upgrade 2>> $LOG
 
-rm $(dirname $LOG)/sensors.log
+rm $DIR/init.sh
 
 echo "[$(date --rfc-3339=seconds)]: Setup complete" >> $LOG
 

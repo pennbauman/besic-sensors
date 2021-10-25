@@ -1,13 +1,15 @@
 #!/usr/bin/python3
 import os
 
+DEPLOYMENT_FILE="/var/besic/deploy.conf"
+
 settings = {
     "STORAGE_PATH": "/var/besic/data/sensors.csv",
     "SOUND_PATH": "/var/besic/data/audio.csv",
 }
 
 try:
-    file = open("./config").read().strip().split('\n')
+    file = open(DEPLOYMENT_FILE).read().strip().split('\n')
 
     for line in file:
         line = line.strip()
@@ -27,15 +29,10 @@ except:
     pass
 
 try:
-    settings['DEPLOYMENT'] = os.environ['DEPLOYMENT_NAME']
+    settings['DEPLOYMENT'] = settings['DEPLOYMENT_NAME']
+    settings['ID'] = settings['RELAY_ID']
 except:
     pass
-
-try:
-    settings['ID'] = os.environ['RELAY_ID']
-except:
-    pass
-
 
 def get():
     if (len(settings) > 0):

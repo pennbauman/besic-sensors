@@ -3,6 +3,7 @@ import lib.BME as BME
 import lib.LUX as LUX
 import lib.config as config
 from lib.Heartbeats import sendHeartBeat
+from lib.Api import sendApiHeartbeat
 import time,os,sys,threading
 
 print("Started Sensor Program")
@@ -19,9 +20,9 @@ except:
     print("Config Error")
     exit(1)
 
-print("DEPLOYMENT: " + deployment)
-print("Relay ID: " + relay)
-print("STORAGE_PATH: " + filepath)
+print("DEPLOYMENT: '" + deployment + "'")
+print("Relay ID: '" + relay + "'")
+print("STORAGE_PATH: '" + filepath + "'")
 
 # Performs Audio Data Collection and Analysis
 def CollectSound():
@@ -43,9 +44,12 @@ while True:
     temp, humidity, pressure = BME.data()
     light = LUX.lux()
     #print('Temp={0:0.1f}*C Humidity={1:0.1f}% Pressure={2:0.1f} Light={3:0.1f}'.format(temp, humidity, pressure, light))
-    
-    sendHeartBeat(relay,deployment,light,temp,pressure,humidity)
-    
+
+    if (relay == ""):
+        sendApiHeartbeat(light,temp,pressure,humidity)
+    else:
+        sendHeartBeat(relay,deployment,light,temp,pressure,humidity)
+
     temperature = '%.2f'%(temp)
     humidity = '%.2f'%(humidity)
     pressure = '%.2f'%(pressure)
