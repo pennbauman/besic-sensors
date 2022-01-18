@@ -7,15 +7,17 @@
 #include "device.h"
 
 typedef struct {
-	time_t timestamp;
+	time_t time;
 	float lux;
-	float hum;
 	float tmp;
 	float prs;
+	float hum;
 } Data;
 
-Data readData();
-void printData(Data d);
-char* jsonData(Data d);
+Data getData();
+void readData(Data *d);
+void printData(Data const *d);
+char *jsonData(Data const *d);
+void writeData(Data const *d, char const *filename);
 
 #endif

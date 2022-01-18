@@ -1,17 +1,11 @@
-CC = gcc
+CC = clang
 CFLAGS = -Wall
-WIRINGPI = /usr/lib/libwiringPi.so
 
-
-sensors.out: device.o data.o
-	$(CC) $(CFLAGS) main.c $^ $(WIRINGPI) -o $@
+sensors.out: main.c device.o data.o
+	$(CC) $(CFLAGS) -pthread -lcurl -lwiringPi $^ -o $@
 
 data.o: data.c data.h device.o
-	$(CC) -c $< -o $@
-
 device.o: device.c device.h
-	$(CC) -c $< -o $@
-
 
 clean:
 	rm -f *.o *.out
