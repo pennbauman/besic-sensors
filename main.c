@@ -42,6 +42,10 @@ void *sending_run(void *args) {
 	char url[64];
 	sprintf(url, "%s/device/data", API_URL);
 	curl_easy_setopt(curl, CURLOPT_URL, url);
+	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 15L); // 15sec
+	struct curl_slist *hs=NULL;
+	hs = curl_slist_append(hs, "Content-Type: application/json");
+	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, hs);
 
 	while (1) {
 		// Wait for data
@@ -62,11 +66,10 @@ void *sending_run(void *args) {
 			sprintf(json, fmt, MAC, PASSWORD, data);
 
 			// Make API request
-			printf("%s\n", json);
-			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
+			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json);
 			CURLcode res = curl_easy_perform(curl);
 			if(res != CURLE_OK)
-				printf("CURL failed");
+				printf("CURL failed\n");
 
 			free(data);
 		}
