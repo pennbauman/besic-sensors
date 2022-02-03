@@ -1,0 +1,29 @@
+besic-audio-py (1.2.1) UNRELEASED; urgency=medium
+
+  * Adding install and remove scripts.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Thu, 16 Dec 2021 21:30:35 -0500
+
+besic-audio-py (1.1.1) UNRELEASED; urgency=medium
+
+  * Adding config file.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Thu, 16 Dec 2021 16:41:33 -0500
+
+besic-audio-py (1.1.0) UNRELEASED; urgency=medium
+
+  * Adding systemd service.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Thu, 16 Dec 2021 16:30:40 -0500
+
+besic-audio-py (1.0.1) UNRELEASED; urgency=medium
+
+  * Fixing install locations.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Wed, 15 Dec 2021 21:13:35 -0500
+
+besic-audio-py (1.0.0) UNRELEASED; urgency=medium
+
+  * Initial release.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Tue, 14 Dec 2021 22:15:53 -0500
