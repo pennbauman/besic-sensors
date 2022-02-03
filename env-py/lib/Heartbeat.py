@@ -5,9 +5,6 @@ import os
 from urllib import parse, request, error
 
 
-REMOTE_URL = "https://api.besic.org/device/data"
-
-
 def sendData(mac, password, data):
     if type(data) is not dict:
         print("Invalid Data")
@@ -28,7 +25,7 @@ def sendData(mac, password, data):
     })
     encoded_data = encoded_data.encode('ascii')
 
-    req = request.Request(REMOTE_URL, encoded_data)
+    req = request.Request(os.getenv("API_URL"), encoded_data)
     try:
         with request.urlopen(req) as res:
             res.read()
