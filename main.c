@@ -3,12 +3,14 @@
 #include <pthread.h>
 #include <curl/curl.h>
 
+#include <besic.h>
+
 #include "data.h"
 
 // global variables
 pthread_mutex_t read_lock;
 pthread_cond_t read_cv, send_cv;
-char *MAC, *PASSWORD, *ENVIRON_PATH, *API_URL;
+char *MAC, *PASSWORD, *API_URL, *DATA_PATH, *DATA_FILE;
 char print = 0;
 
 
@@ -24,7 +26,7 @@ void *readings_run(void *args) {
 		pthread_mutex_unlock(&read_lock);
 
 		if (!print)
-			writeData(reading, ENVIRON_PATH);
+			writeData(reading, DATA_FILE);
 
 		// Wait for new cycle
 		pthread_mutex_lock(&read_lock);
@@ -86,35 +88,42 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
-	// Read environment variables
-	MAC = getenv("MAC");
+	// Read configuration settings
+	MAC = getDeviceMAC();
 	if (MAC == NULL) {
 		printf("MAC missing\n");
 		return 1;
 	}
-	PASSWORD = getenv("PASSWORD");
+	PASSWORD = getDevicePassword();
 	if (PASSWORD == NULL) {
-		printf("PASSWORD missing\n");
+		printf("Password missing\n");
 		return 1;
 	}
-	ENVIRON_PATH = getenv("ENVIRON_PATH");
-	if (ENVIRON_PATH == NULL) {
-		printf("ENVIRON_PATH missing\n");
-		return 1;
-	}
-	API_URL = getenv("API_URL");
+	API_URL = getApiUrl();
 	if (API_URL == NULL) {
-		printf("API_URL missing\n");
+		printf("API URL missing\n");
 		return 1;
 	}
+	DATA_PATH = getDataPath();
+	if (DATA_PATH == NULL) {
+		printf("Data path missing\n");
+		return 1;
+	}
+
+	// Compute data file location
+	char *file_name = "/sensors.csv";
+	DATA_FILE = malloc(strlen(DATA_PATH) + strlen(file_name) - 1);
+	memcpy(DATA_FILE, DATA_PATH, strlen(DATA_PATH));
+	memcpy(DATA_FILE + strlen(DATA_PATH), file_name, strlen(file_name));
+	DATA_FILE[strlen(DATA_PATH) + strlen(file_name)] = 0;
 
 	// Setup console printing
 	if ((argc > 1) && (0 == strcmp("print", argv[1]))) {
 		print = 1;
 		printf("Environmental Sensors\n");
-		printf("MAC:          %s\n", MAC);
-		printf("ENVIRON_PATH: %s\n", ENVIRON_PATH);
-		printf("API_URL:      %s\n\n", API_URL);
+		printf("MAC:        %s\n", MAC);
+		printf("DATA_FILE:  %s\n", DATA_FILE);
+		printf("API_URL:    %s\n\n", API_URL);
 	}
 
 	// Initialize mutex and locks
