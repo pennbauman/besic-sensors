@@ -1,5 +1,7 @@
 *.pyc
 *.log
+*.o
+*.out
 *.tar.gz
 *.tar.xz
 *.deb
@@ -16,3 +18,4 @@ debhelper-build-stamp
 files
 /audio-py/debian/besic-audio-py
 /env-py/debian/besic-env-py
+/envsense/debian/besic-envsense
