@@ -1,8 +1,8 @@
-CFLAGS = -Wall -std=c17 -O2 -fPIE
+CFLAGS = -Wall -std=c17 -O2 -fPIE -g
 prefix = /usr/local
 
 envsense.out: main.c device.o data.o
-	$(CC) $(CFLAGS) $^ -pie -pthread -lcurl -lwiringPi -lbesic -o $@
+	$(CC) $(CFLAGS) $^ -pie -pthread -lcurl -lpigpio -lbesic -o $@
 
 data.o: data.c data.h device.o
 device.o: device.c device.h

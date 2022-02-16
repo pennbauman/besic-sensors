@@ -50,16 +50,23 @@ uint16_t endian(uint16_t data){
 }
 
 float veml7700(){
-	fd = wiringPiI2CSetup(VEML7700_DEVICE_ID);
+	#ifdef DEBUG_
+	printf("veml7700\n");
+	#endif
 
-	if(fd == -1){
+	if (gpioInitialise() < 0){
+		return -1;
+	}
+	fd = i2cOpen(1,VEML7700_DEVICE_ID,0);
+
+	if (fd < 0){
 		return -1;
 	}
 
-	wiringPiI2CWriteReg16(fd,0x00,VEML7700_CONFIG_SETTINGS);
-	wiringPiI2CWriteReg16(fd,0x03,VEML7700_POWER_SETTINGS);
+	i2cWriteWordData(fd,0x00,VEML7700_CONFIG_SETTINGS);
+	i2cWriteWordData(fd,0x03,VEML7700_POWER_SETTINGS);
 
-	uint16_t data = wiringPiI2CReadReg16(fd,0x04);
+	uint16_t data = i2cReadWordData(fd,0x04);
 
 	float f = convert_bin_to_lux(data);
 
@@ -68,21 +75,29 @@ float veml7700(){
 	printf("%.2f\n",f);
 	#endif
 
+	i2cClose(fd);
 	return f;
 }
 
 float hs3002(){
-	fd = wiringPiI2CSetup(HS300x_DEVICE_ID);
+	#ifdef DEBUG_
+	printf("hs3002\n");
+	#endif
 
-	if(fd == -1){
+	if (gpioInitialise() < 0){
+		return -1;
+	}
+	fd = i2cOpen(1,HS300x_DEVICE_ID,0);
+
+	if (fd < 0){
 		return -1;
 	}
 
-	wiringPiI2CWrite(fd,0);
+	i2cWriteByte(fd,0);
 
 	delay(50);
 
-	int data = wiringPiI2CRead(fd);
+	int data = i2cReadByte(fd);
 
 	data = endian(data);
 
@@ -93,19 +108,27 @@ float hs3002(){
 	printf("%.2f\n",f);
 	#endif
 
+	i2cClose(fd);
 	return f;
 }
 
 float tmp117(){
-	fd = wiringPiI2CSetup(TMP117_DEVICE_ID);
+	#ifdef DEBUG_
+	printf("tmp117\n");
+	#endif
 
-	if (fd == -1){
+	if (gpioInitialise() < 0){
+		return -1;
+	}
+	fd = i2cOpen(1,TMP117_DEVICE_ID,0);
+
+	if (fd < 0){
 		return -1;
 	}
 
-	wiringPiI2CWriteReg16(fd,0x01,TMP117_CONFIG_SETTINGS); // had the id again lol
+	i2cWriteWordData(fd,0x01,TMP117_CONFIG_SETTINGS); // had the id again lol
 
-	uint16_t data = wiringPiI2CReadReg16(fd,0x00);
+	uint16_t data = i2cReadWordData(fd,0x00);
 
 	data = endian(data);
 
@@ -116,6 +139,7 @@ float tmp117(){
 	printf("%.2f\n",f);
 	#endif
 
+	i2cClose(fd);
 	return f;
 }
 
@@ -125,40 +149,47 @@ uint32_t array_to_int(uint8_t*value){
 }
 
 float ms5607(){
-	fd = wiringPiI2CSetup(0x77);
+	#ifdef DEBUG_
+	printf("ms5607\n");
+	#endif
 
-	if (fd == -1){
+	if (gpioInitialise() < 0){
+		return -1;
+	}
+	fd = i2cOpen(1,MS5607_DEVICE_ID,0);
+
+	if (fd < 0){
 		return -1;
 	}
 
 	uint8_t cmd = 0;
 	uint16_t C1,C2,C3,C4,C5,C6 = 5;
-	uint8_t D1_raw[3], D2_raw[3];
+	uint8_t D1_raw[3],D2_raw[3];
 
 	cmd = 0xA2;
-	write(fd,&cmd,1);
+	i2cWriteByte(fd,cmd);
 	delay(10);
-	read(fd,&C1,2);
+	i2cReadDevice(fd,&C1,2);
 	cmd = 0xA4;
-	write(fd,&cmd,1);
+	i2cWriteByte(fd,cmd);
 	delay(10);
-	read(fd,&C2,2);
+	i2cReadDevice(fd,&C2,2);
 	cmd = 0xA6;
-	write(fd,&cmd,1);
+	i2cWriteByte(fd,cmd);
 	delay(10);
-	read(fd,&C3,2);
+	i2cReadDevice(fd,&C3,2);
 	cmd = 0xA8;
-	write(fd,&cmd,1);
+	i2cWriteByte(fd,cmd);
 	delay(10);
-	read(fd,&C4,2);
+	i2cReadDevice(fd,&C4,2);
 	cmd = 0xAA;
-	write(fd,&cmd,1);
+	i2cWriteByte(fd,cmd);
 	delay(10);
-	read(fd,&C5,2);
+	i2cReadDevice(fd,&C5,2);
 	cmd = 0xAC;
-	write(fd,&cmd,1);
+	i2cWriteByte(fd,cmd);
 	delay(10);
-	read(fd,&C6,2);
+	i2cReadDevice(fd,&C6,2);
 
 	C1 = endian(C1);
 	C2 = endian(C2);
@@ -171,17 +202,17 @@ float ms5607(){
 	printf("1:%u\n2:%u\n3:%u\n4:%u\n5:%u\n6:%u\n",C1,C2,C3,C4,C5,C6);
 	#endif
 
-	wiringPiI2CWrite(fd,0x48);
+	i2cWriteByte(fd,0x48);
 	delay(10);
-	wiringPiI2CWrite(fd,0x00);
+	i2cWriteByte(fd,0x00);
 	delay(10);
-	read(fd,&D1_raw,3);
+	i2cReadDevice(fd,&D1_raw,3);
 
-	wiringPiI2CWrite(fd,0x58);
+	i2cWriteByte(fd,0x58);
 	delay(10);
-	wiringPiI2CWrite(fd,0x00);
+	i2cWriteByte(fd,0x00);
 	delay(10);
-	read(fd,&D2_raw,3);
+	i2cReadDevice(fd,&D2_raw,3);
 
 	uint32_t D1 = array_to_int(D1_raw);
 	uint32_t D2 = array_to_int(D2_raw);
@@ -216,25 +247,6 @@ float ms5607(){
 	printf("P:%0.2f\n",P);
 	#endif
 
+	i2cClose(fd);
 	return P;
 }
-
-/*
-int main(){
-	printf("\n~~~~~~ MAC ADDR ~~~~~~\n");
-	mac_addr();
-	printf("\nMAC: %s\n",ADDR);
-	printf("\n~~~~~~ VEML7700 ~~~~~~\n");
-	float LUX = veml7700();
-	printf("\nLUX: %10.2f\n",LUX);
-	printf("\n~~~~~~  HS3002  ~~~~~~\n");
-	float HUM = hs3002() * 100;
-	printf("\nHUM: %10.2f%%\n",HUM);
-	printf("\n~~~~~~  TMP117  ~~~~~~\n");
-	float TMP = tmp117();
-	printf("\nTMP: %10.2f°C\n",TMP,176);
-	printf("\n~~~~~~  MS5607  ~~~~~~\n");
-	float PRS = ms5607();
-	printf("\nPRS: %10.2f mBar\n\n",PRS);
-	return 0;
-} // */

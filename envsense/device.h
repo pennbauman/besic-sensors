@@ -1,7 +1,7 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include <wiringPiI2C.h>
+#include <pigpio.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
