@@ -1,8 +1,8 @@
-besic-audio-py (1.2.1) UNRELEASED; urgency=medium
+besic-audio-py (1.2.0) UNRELEASED; urgency=medium
 
-  * Adding install and remove scripts.
+  * Added systemd service.
 
- -- Penn Bauman <pcb8gb@virginia.edu>  Thu, 16 Dec 2021 21:30:35 -0500
+ -- Penn Bauman <pcb8gb@virginia.edu>  Wed, 23 Feb 2022 22:01:28 -0500
 
 besic-audio-py (1.1.1) UNRELEASED; urgency=medium
 

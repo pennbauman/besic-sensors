@@ -1,3 +1,9 @@
+besic-envsense (0.2.1) UNRELEASED; urgency=medium
+
+  * Added systemd service.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Wed, 16 Feb 2022 18:04:41 -0500
+
 besic-envsense (0.2.0) UNRELEASED; urgency=medium
 
   * Replaced wiringPi with pigpio.
