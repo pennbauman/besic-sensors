@@ -1,3 +1,9 @@
+besic-audio-py (1.2.1) UNRELEASED; urgency=medium
+
+  * Removed snd-i2s_rpi dependency.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Mon, 21 Mar 2022 20:19:49 -0500
+
 besic-audio-py (1.2.0) UNRELEASED; urgency=medium
 
   * Added systemd service.
