@@ -62,4 +62,3 @@ while True:
         Mic.DataThread(timestamp, first_half, second_half, counter, AUDIO_PATH)
 
     counter += 1
-    time.sleep(1)

@@ -16,9 +16,10 @@ except:
 
 
 # Constant settings
-CHUNKSIZE = 512   # fixed chunk size
-RATE = 8000       # 16kHz Sampling rate
-SAMPLE_DUR = 0.5  # 250ms sampling with 50% overlap
+CHUNKSIZE = 512    # fixed chunk size
+RAW_RATE = 44100   # 44100Hz sampling rate used by mic
+DATA_RATE = 16000  # 16kHz sampling rate used for data analysis
+SAMPLE_DUR = 0.5   # 250ms sampling with 50% overlap
 
 
 # suppress PyAudio / Alsa error messages
@@ -61,7 +62,7 @@ combinedData = []
 
 # Get features from audio data
 def AnalyzeData(data):
-    return ShortTermFeatures.feature_extraction(data, RATE, SAMPLE_DUR*RATE, (SAMPLE_DUR/2)*RATE,deltas=False)
+    return ShortTermFeatures.feature_extraction(data, DATA_RATE, SAMPLE_DUR*DATA_RATE, (SAMPLE_DUR/2)*DATA_RATE,deltas=False)
 
 
 
@@ -108,10 +109,11 @@ def DataThread(ts, fh, sh, i, path):
 def RawData():
     npd = []
     # Read data
-    for _ in range(0, int(math.ceil(RATE/CHUNKSIZE * (SAMPLE_DUR/2)))):
+    for _ in range(0, int(math.ceil(DATA_RATE/CHUNKSIZE * (SAMPLE_DUR/2)))):
         data = stream.read(CHUNKSIZE,exception_on_overflow=False)
         numpydata = np.frombuffer(data, dtype=np.uint32)
         npd.append(numpydata)
+    time.sleep(0.4)
     # Convert data to numpy
     return np.concatenate(npd).ravel()
 
@@ -130,4 +132,4 @@ else:
     if devId is None:
         print("No devices identified")
         sys.exit(1)
-    stream = p.open(format=pyaudio.paInt32, channels=1, rate=RATE,input=True, frames_per_buffer=CHUNKSIZE,input_device_index = devId)
+    stream = p.open(format=pyaudio.paInt32, channels=1, rate=RAW_RATE, input=True, frames_per_buffer=CHUNKSIZE, input_device_index = devId)
