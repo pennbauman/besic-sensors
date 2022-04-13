@@ -3,10 +3,10 @@ Maintainer: Penn Bauman <pcb8gb@virginia.edu>
 Section: misc
 Priority: optional
 Standards-Version: 4.5.0
-Build-Depends: libbesic0-dev, libpigpio-dev, libcurl4-openssl-dev, debhelper (>= 9)
+Build-Depends: libbesic2-dev, libpigpio-dev, debhelper (>= 9)
 
 Package: besic-envsense
 Architecture: armhf
-Depends: libbesic0, libpigpio1, libcurl4, ${shlibs:Depends}, ${misc:Depends}
+Depends: libbesic2, libpigpio1, ${shlibs:Depends}, ${misc:Depends}
 Description: BESI-C environmental data collection
  Compiled tool to preform BESI-C project environmental data collection

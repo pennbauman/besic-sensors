@@ -1,22 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <curl/curl.h>
-
 #include <besic.h>
 
-#include "data.h"
+#include "device.h"
 
 // global variables
 pthread_mutex_t read_lock;
 pthread_cond_t read_cv, send_cv;
-char *MAC, *PASSWORD, *API_URL, *DATA_PATH, *DATA_FILE;
+char *DATA_FILE;
 char print = 0;
+
+
+void printData(besic_data const *d) {
+	printf("VEML7700 LUX: %10.2f\n", d->lux);
+	printf("TMP117   TMP: %10.2f°C\n", d->tmp);
+	printf("MS5607   PRS: %10.2f mBar\n", d->prs);
+	printf("HS3002   HUM: %10.2f%%\n", d->hum);
+}
+
+void writeData(besic_data const *d, char const *filename) {
+	FILE *fp;
+	fp = fopen(filename, "a");
+	if(fp == NULL) {
+		perror("File Write Error: ");
+		exit(1);
+	}
+	fprintf(fp, "%lld,%f,%f,%f,%f\n", d->timestamp, d->lux, d->tmp, d->prs, d->hum);
+	fclose(fp);
+}
 
 
 // Sensor reading thread
 void *readings_run(void *args) {
-	Data *reading = (Data*)args;
+	besic_data *reading = (besic_data*)args;
 	while (1) {
 		pthread_mutex_lock(&read_lock);
 
@@ -36,19 +55,9 @@ void *readings_run(void *args) {
 	return NULL;
 }
 
-// Data sending thread
+// BESIC_Data sending thread
 void *sending_run(void *args) {
-	Data *reading = (Data*)args;
-	// Setup curl
-	CURL *curl = curl_easy_init();
-	char url[64];
-	sprintf(url, "%s/device/data", API_URL);
-	curl_easy_setopt(curl, CURLOPT_URL, url);
-	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 15L); // 15sec
-	struct curl_slist *hs=NULL;
-	hs = curl_slist_append(hs, "Content-Type: application/json");
-	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, hs);
-
+	besic_data *reading = (besic_data*)args;
 	while (1) {
 		// Wait for data
 		pthread_mutex_lock(&read_lock);
@@ -61,19 +70,12 @@ void *sending_run(void *args) {
 			pthread_mutex_unlock(&read_lock);
 		} else {
 			// Prepare json payload
-			char* data = jsonData(reading);
-			pthread_mutex_unlock(&read_lock);
-			char json[256];
-			char *fmt = "{\"mac\":\"%s\",\"password\":\"%s\",\"data\":%s}";
-			sprintf(json, fmt, MAC, PASSWORD, data);
-
-			// Make API request
-			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json);
-			CURLcode res = curl_easy_perform(curl);
-			if(res != CURLE_OK)
+			int res = besic_data_heartbeat(reading);
+			if (res < 0) {
 				printf("CURL failed\n");
-
-			free(data);
+			} else if (res > 0) {
+				printf("HTTP Error %d\n", res);
+			}
 		}
 	}
 	return NULL;
@@ -83,47 +85,26 @@ void *sending_run(void *args) {
 int main(int argc, char **argv) {
 	// Print simple test reading
 	if ((argc > 1) && (0 == strcmp("test", argv[1]))) {
-		Data reading = getData();
+		besic_data reading;
+		readData(&reading);
 		printData(&reading);
 		return 0;
 	}
 
-	// Read configuration settings
-	MAC = getDeviceMAC();
-	if (MAC == NULL) {
-		printf("MAC missing\n");
-		return 1;
-	}
-	PASSWORD = getDevicePassword();
-	if (PASSWORD == NULL) {
-		printf("Password missing\n");
-		return 1;
-	}
-	API_URL = getApiUrl();
-	if (API_URL == NULL) {
-		printf("API URL missing\n");
-		return 1;
-	}
-	DATA_PATH = getDataPath();
-	if (DATA_PATH == NULL) {
+	// Compute data file location
+	char *data_path = besic_data_dir();
+	if (data_path == NULL) {
 		printf("Data path missing\n");
 		return 1;
 	}
-
-	// Compute data file location
-	char *file_name = "/sensors.csv";
-	DATA_FILE = malloc(strlen(DATA_PATH) + strlen(file_name) - 1);
-	memcpy(DATA_FILE, DATA_PATH, strlen(DATA_PATH));
-	memcpy(DATA_FILE + strlen(DATA_PATH), file_name, strlen(file_name));
-	DATA_FILE[strlen(DATA_PATH) + strlen(file_name)] = 0;
+	DATA_FILE = malloc(strlen(data_path) + 13);
+	sprintf(DATA_FILE, "%s/sensors.csv", data_path);
 
 	// Setup console printing
 	if ((argc > 1) && (0 == strcmp("print", argv[1]))) {
 		print = 1;
 		printf("Environmental Sensors\n");
-		printf("MAC:        %s\n", MAC);
-		printf("DATA_FILE:  %s\n", DATA_FILE);
-		printf("API_URL:    %s\n\n", API_URL);
+		printf(">> %s\n", DATA_FILE);
 	}
 
 	// Initialize mutex and locks
@@ -140,7 +121,7 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
-	Data reading;
+	besic_data reading;
 	pthread_t readings_thread, sending_thread;
 
 	// Start sensors and data sending thread

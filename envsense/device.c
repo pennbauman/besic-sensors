@@ -15,15 +15,6 @@
 
 //#define DEBUG_
 
-int fd;
-
-char ADDR [18];
-
-void mac_addr(){
-	FILE *f = fopen("/sys/class/net/wlan0/address","r");
-	fgets(ADDR,18,f);
-	fclose(f);
-}
 
 void delay(int ms){
 	usleep((1000*ms));
@@ -57,7 +48,7 @@ float veml7700(){
 	if (gpioInitialise() < 0){
 		return -1;
 	}
-	fd = i2cOpen(1,VEML7700_DEVICE_ID,0);
+	int fd = i2cOpen(1,VEML7700_DEVICE_ID,0);
 
 	if (fd < 0){
 		return -1;
@@ -87,7 +78,7 @@ float hs3002(){
 	if (gpioInitialise() < 0){
 		return -1;
 	}
-	fd = i2cOpen(1,HS300x_DEVICE_ID,0);
+	int fd = i2cOpen(1,HS300x_DEVICE_ID,0);
 
 	if (fd < 0){
 		return -1;
@@ -120,7 +111,7 @@ float tmp117(){
 	if (gpioInitialise() < 0){
 		return -1;
 	}
-	fd = i2cOpen(1,TMP117_DEVICE_ID,0);
+	int fd = i2cOpen(1,TMP117_DEVICE_ID,0);
 
 	if (fd < 0){
 		return -1;
@@ -156,7 +147,7 @@ float ms5607(){
 	if (gpioInitialise() < 0){
 		return -1;
 	}
-	fd = i2cOpen(1,MS5607_DEVICE_ID,0);
+	int fd = i2cOpen(1,MS5607_DEVICE_ID,0);
 
 	if (fd < 0){
 		return -1;
@@ -169,27 +160,27 @@ float ms5607(){
 	cmd = 0xA2;
 	i2cWriteByte(fd,cmd);
 	delay(10);
-	i2cReadDevice(fd,&C1,2);
+	i2cReadDevice(fd,(char*)&C1,2);
 	cmd = 0xA4;
 	i2cWriteByte(fd,cmd);
 	delay(10);
-	i2cReadDevice(fd,&C2,2);
+	i2cReadDevice(fd,(char*)&C2,2);
 	cmd = 0xA6;
 	i2cWriteByte(fd,cmd);
 	delay(10);
-	i2cReadDevice(fd,&C3,2);
+	i2cReadDevice(fd,(char*)&C3,2);
 	cmd = 0xA8;
 	i2cWriteByte(fd,cmd);
 	delay(10);
-	i2cReadDevice(fd,&C4,2);
+	i2cReadDevice(fd,(char*)&C4,2);
 	cmd = 0xAA;
 	i2cWriteByte(fd,cmd);
 	delay(10);
-	i2cReadDevice(fd,&C5,2);
+	i2cReadDevice(fd,(char*)&C5,2);
 	cmd = 0xAC;
 	i2cWriteByte(fd,cmd);
 	delay(10);
-	i2cReadDevice(fd,&C6,2);
+	i2cReadDevice(fd,(char*)&C6,2);
 
 	C1 = endian(C1);
 	C2 = endian(C2);
@@ -206,13 +197,13 @@ float ms5607(){
 	delay(10);
 	i2cWriteByte(fd,0x00);
 	delay(10);
-	i2cReadDevice(fd,&D1_raw,3);
+	i2cReadDevice(fd,(char*)&D1_raw,3);
 
 	i2cWriteByte(fd,0x58);
 	delay(10);
 	i2cWriteByte(fd,0x00);
 	delay(10);
-	i2cReadDevice(fd,&D2_raw,3);
+	i2cReadDevice(fd,(char*)&D2_raw,3);
 
 	uint32_t D1 = array_to_int(D1_raw);
 	uint32_t D2 = array_to_int(D2_raw);
@@ -249,4 +240,15 @@ float ms5607(){
 
 	i2cClose(fd);
 	return P;
+}
+
+
+void readData(besic_data *d) {
+	struct timeval time;
+	gettimeofday(&time, NULL);
+	d->timestamp = time.tv_sec*1000LL + time.tv_usec/1000LL;
+	d->lux = veml7700();
+	d->tmp = tmp117();
+	d->prs = ms5607();
+	d->hum = hs3002() * 100;
 }

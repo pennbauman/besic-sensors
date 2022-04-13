@@ -16,7 +16,7 @@ Then enter package directory and build package
 ## Build Sensor Package
 On a raspberry pi, install build dependencies
 
-	sudo apt-get -y install devscripts debhelper libbesic0 libpigpio1 libcurl4 libbesic-dev libpigpio-dev libcurl4-openssl-dev
+	sudo apt-get -y install devscripts debhelper libbesic2 libpigpio1 libbesic2-dev libpigpio-dev
 
 Then enter package directory and build package
 

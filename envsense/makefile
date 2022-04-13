@@ -1,11 +1,11 @@
-CFLAGS = -Wall -std=c17 -O2 -fPIE -g
+CC = gcc
+CFLAGS = -g -Wall -std=c17 -O3 -fPIE
 prefix = /usr/local
 bindir = $(prefix)/bin
 
-envsense.out: main.c device.o data.o
-	$(CC) $(CFLAGS) $^ -pie -pthread -lcurl -lpigpio -lbesic -o $@
+envsense.out: main.c device.o
+	$(CC) $(CFLAGS) $^ -pie -pthread -lpigpio -lbesic -o $@
 
-data.o: data.c data.h device.o
 device.o: device.c device.h
 
 install: envsense.out
