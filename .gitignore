@@ -16,6 +16,4 @@ __init__.py
 .env
 debhelper-build-stamp
 files
-/audio-py/debian/besic-audio-py
-/env-py/debian/besic-env-py
-/envsense/debian/besic-envsense
+/*/debian/besic-*/*

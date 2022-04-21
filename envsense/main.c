@@ -22,10 +22,14 @@ void printData(besic_data const *d) {
 }
 
 void writeData(besic_data const *d, char const *filename) {
+	if(d == NULL) {
+		perror("NULL Data");
+		exit(1);
+	}
 	FILE *fp;
 	fp = fopen(filename, "a");
 	if(fp == NULL) {
-		perror("File Write Error: ");
+		perror("File Write Error");
 		exit(1);
 	}
 	fprintf(fp, "%lld,%f,%f,%f,%f\n", d->timestamp, d->lux, d->tmp, d->prs, d->hum);
@@ -55,7 +59,7 @@ void *readings_run(void *args) {
 	return NULL;
 }
 
-// BESIC_Data sending thread
+// Data sending thread
 void *sending_run(void *args) {
 	besic_data *reading = (besic_data*)args;
 	while (1) {
@@ -69,8 +73,11 @@ void *sending_run(void *args) {
 			printData(reading);
 			pthread_mutex_unlock(&read_lock);
 		} else {
-			// Prepare json payload
-			int res = besic_data_heartbeat(reading);
+			// Send data heartbeat
+			besic_data temp_reading;
+			memcpy(&temp_reading, reading, sizeof(besic_data));
+			pthread_mutex_unlock(&read_lock);
+			int res = besic_data_heartbeat(&temp_reading);
 			if (res < 0) {
 				printf("CURL failed\n");
 			} else if (res > 0) {
