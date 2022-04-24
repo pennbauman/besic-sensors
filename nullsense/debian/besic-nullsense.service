@@ -1,0 +1,15 @@
+[Unit]
+Description=BESI-C Null Data Sending
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+StandardOutput=file:/var/log/besic/nullsense.log
+StandardError=inherit
+ExecStart=besic-nullsense
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

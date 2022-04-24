@@ -1,0 +1,13 @@
+Source: besic-dummy-csvs
+Maintainer: Penn Bauman <pcb8gb@virginia.edu>
+Section: misc
+Priority: optional
+Standards-Version: 4.5.0
+Build-Depends: libbesic2-dev, debhelper (>= 9)
+
+Package: besic-dummy-csvs
+Architecture: any
+Depends: libbesic2, ${shlibs:Depends}, ${misc:Depends}
+Conflicts: besic-envsense, besic-audio-py
+Description: BESI-C dummy CSV generation
+ Program to generate dummy CSV data for network testing

@@ -1,0 +1,14 @@
+[Unit]
+Description=BESI-C Dummy CSV generation
+
+[Service]
+Type=simple
+User=root
+Group=root
+StandardOutput=file:/var/log/besic/dummy-csvs.log
+StandardError=inherit
+ExecStart=besic-dummy-csvs
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
