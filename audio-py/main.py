@@ -2,6 +2,7 @@
 import time
 import os
 import sys
+import besic
 import lib.Mic as Mic
 
 
@@ -34,10 +35,7 @@ if (len(sys.argv) > 1) and (sys.argv[1] == "test"):
 
 
 # Determine data file path
-AUDIO_PATH = os.getenv("AUDIO_PATH")
-if not AUDIO_PATH:
-    AUDIO_PATH = "/var/besic/data/audio.csv"
-
+AUDIO_PATH = os.path.join(besic.data_dir(), "audio.csv")
 print("Starting Audio Collection")
 print("> Writing to " + AUDIO_PATH)
 

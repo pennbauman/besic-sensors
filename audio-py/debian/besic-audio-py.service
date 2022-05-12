@@ -6,10 +6,9 @@ After=network.target
 Type=simple
 User=root
 Group=root
-EnvironmentFile=/etc/besic/audio.conf
-StandardOutput=file:/var/log/besic/audio.log
+StandardOutput=file:/var/log/besic/systemd-audio.log
 StandardError=inherit
-ExecStart=/usr/bin/python3 /usr/share/besic/audio-py/AudioRead.py
+ExecStart=/usr/bin/python3 /usr/share/besic/audio-py/main.py
 Restart=always
 
 [Install]
