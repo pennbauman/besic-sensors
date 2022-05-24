@@ -1,3 +1,9 @@
+besic-nullsense (0.1.1) UNRELEASED; urgency=medium
+
+  * Enables systemd service manually.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Mon, 23 May 2022 20:09:27 -0500
+
 besic-nullsense (0.1.0) UNRELEASED; urgency=medium
 
   * Initial release.

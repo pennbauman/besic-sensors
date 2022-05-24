@@ -1,0 +1,4 @@
+#!/bin/bash
+
+systemctl enable besic-nullsense
+systemctl start besic-nullsense

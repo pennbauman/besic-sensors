@@ -16,4 +16,5 @@ __init__.py
 .env
 debhelper-build-stamp
 files
-/*/debian/besic-*/*
+tmp
+/*/debian/besic-*

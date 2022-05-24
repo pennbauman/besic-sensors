@@ -1,3 +1,9 @@
+besic-audio-py (2.0.1) UNRELEASED; urgency=medium
+
+  * Enables systemd service manually.
+
+ -- Penn Bauman <pcb8gb@virginia.edu>  Mon, 23 May 2022 20:09:27 -0500
+
 besic-audio-py (2.0.0) UNRELEASED; urgency=medium
 
   * Added settings from shared libbesic.

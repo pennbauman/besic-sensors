@@ -1,0 +1,4 @@
+#!/bin/bash
+
+systemctl enable besic-dummy-csvs
+systemctl start besic-dummy-csvs

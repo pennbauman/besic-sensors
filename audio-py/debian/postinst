@@ -1,0 +1,4 @@
+#!/bin/bash
+
+systemctl enable besic-audio-py
+systemctl start besic-audio-py
