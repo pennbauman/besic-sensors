@@ -1,3 +1,6 @@
+// BESI-C Environmental Sensors
+//   https://github.com/besi-c/besic-sensors
+//   Penn Bauman <pcb8gb@virginia.edu>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +17,7 @@ char *DATA_FILE;
 char print = 0;
 
 
+// Print data to console
 void printData(besic_data const *d) {
 	printf("VEML7700 LUX: %10.2f\n", d->lux);
 	printf("TMP117   TMP: %10.2f°C\n", d->tmp);
@@ -21,6 +25,7 @@ void printData(besic_data const *d) {
 	printf("HS3002   HUM: %10.2f%%\n", d->hum);
 }
 
+// Write data to CSV file
 void writeData(besic_data const *d, char const *filename) {
 	if(d == NULL) {
 		perror("NULL Data");

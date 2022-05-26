@@ -1,3 +1,7 @@
+// BESI-C Sensor Board Revision 3.0 Driver
+//   https://github.com/besi-c/besic-sensors
+//   Yudel Martinez <yam3nv@virginia.edu>
+//   Penn Bauman <pcb8gb@virginia.edu>
 #include "device.h"
 
 #define TMP117_DEVICE_ID 0x48

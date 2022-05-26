@@ -9,5 +9,5 @@ Package: besic-nullsense
 Architecture: any
 Depends: libbesic2, ${shlibs:Depends}, ${misc:Depends}
 Conflicts: besic-envsense
-Description: BESI-C null data sending
- Program to send dummy data to the BESI-C API
+Description: BESI-C null data transmitter
+ Transmitter to send dummy data to the BESI-C API

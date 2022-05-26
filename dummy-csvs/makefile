@@ -1,3 +1,6 @@
+# BESI-C Dummy Data File Generator
+#   https://github.com/besi-c/besic-sensors
+#   Penn Bauman <pcb8gb@virginia.edu>
 CC = gcc
 CFLAGS = -g -Wall -std=c17 -O3 -fPIE
 prefix = /usr/local

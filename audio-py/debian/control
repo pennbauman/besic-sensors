@@ -8,5 +8,5 @@ Build-Depends: debhelper (>= 9)
 Package: besic-audio-py
 Architecture: all
 Depends: python3, python3-besic, python3-numpy, python3-matplotlib, python3-scipy, python3-pyaudio, python3-tqdm, jackd, libjack-jackd2-dev, portaudio19-dev, ${misc:Depends}
-Description: BESI-C audio data collection
- Python code for BESI-C project audio data collection and analysis
+Description: BESI-C audio analyzer
+ BESI-C project python tool to collection and analyze audio data

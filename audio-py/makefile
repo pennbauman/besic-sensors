@@ -1,3 +1,6 @@
+# BESI-C Audio Analyzer
+#   https://github.com/besi-c/besic-sensors
+#   Penn Bauman <pcb8gb@virginia.edu>
 prefix=/usr/local
 bindir = $(prefix)/bin
 sharedir = $(prefix)/share/besic

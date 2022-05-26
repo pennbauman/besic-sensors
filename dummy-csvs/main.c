@@ -1,3 +1,6 @@
+// BESI-C Dummy Data File Generator
+//   https://github.com/besi-c/besic-sensors
+//   Penn Bauman <pcb8gb@virginia.edu>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

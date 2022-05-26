@@ -1,5 +1,5 @@
 [Unit]
-Description=BESI-C Dummy CSV generation
+Description=BESI-C Dummy Data File Generator
 
 [Service]
 Type=simple

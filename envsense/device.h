@@ -1,3 +1,7 @@
+// BESI-C Sensor Board Revision 3.0 Driver
+//   https://github.com/besi-c/besic-sensors
+//   Yudel Martinez <yam3nv@virginia.edu>
+//   Penn Bauman <pcb8gb@virginia.edu>
 #ifndef DEVICE_H
 #define DEVICE_H
 

@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+# BESI-C Audio Analyzer
+#   https://github.com/besi-c/besic-sensors
+#   Yudel Martinez <yam3nv@virginia.edu>
+#   Penn Bauman <pcb8gb@virginia.edu>
 import time
 import os
 import sys

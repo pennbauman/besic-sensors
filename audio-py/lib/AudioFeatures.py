@@ -1,3 +1,11 @@
+######################
+#
+# pyAudioAnalysis
+#    source:  https://github.com/tyiannak/pyAudioAnalysis
+#    author:  Theodoros Giannakopoulos <tyiannak@gmail.com>
+#   license:  Apache License 2.0
+#
+######################
 from __future__ import print_function
 import math
 import numpy as np

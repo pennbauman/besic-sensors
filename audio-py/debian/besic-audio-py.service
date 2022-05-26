@@ -1,5 +1,5 @@
 [Unit]
-Description=BESI-C Audio Data (python)
+Description=BESI-C Audio Analyzer
 After=network.target
 
 [Service]

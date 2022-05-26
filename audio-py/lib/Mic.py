@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+# BESI-C Microphone Access
+#   https://github.com/besi-c/besic-sensors
+#   Yudel Martinez <yam3nv@virginia.edu>
+#   Penn Bauman <pcb8gb@virginia.edu>
 import sys
 import math
 import wave

@@ -8,5 +8,5 @@ Build-Depends: libbesic2-dev, libpigpio-dev, debhelper (>= 9)
 Package: besic-envsense
 Architecture: armhf
 Depends: libbesic2, libpigpio1, ${shlibs:Depends}, ${misc:Depends}
-Description: BESI-C environmental data collection
- Compiled tool to preform BESI-C project environmental data collection
+Description: BESI-C environmental sensors
+ Reader and transmitter for BESI-C project environmental data readings

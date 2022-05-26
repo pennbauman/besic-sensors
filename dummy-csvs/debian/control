@@ -9,5 +9,5 @@ Package: besic-dummy-csvs
 Architecture: any
 Depends: libbesic2, ${shlibs:Depends}, ${misc:Depends}
 Conflicts: besic-envsense, besic-audio-py
-Description: BESI-C dummy CSV generation
- Program to generate dummy CSV data for network testing
+Description: BESI-C dummy data file generator
+ Generator to populate CSVs with dummy data for network testing

@@ -1,3 +1,6 @@
+// BESI-C Null Data Transmitter
+//   https://github.com/besi-c/besic-sensors
+//   Penn Bauman <pcb8gb@virginia.edu>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,6 +16,7 @@ pthread_cond_t send_cv;
 
 // Data sending thread
 void *sending_run(void *args) {
+	// Define data
 	besic_data data;
 	data.lux = 0.0;
 	data.tmp = -273.15;
