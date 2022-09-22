@@ -1,5 +1,5 @@
 # BESI-C Sensors
-Code for BESI-C environmental sensors and audio feature extractor
+Environmental sensors reader, audio data analyzer, and testing data generators
 
 
 ## Build Audio Package
@@ -13,12 +13,34 @@ Then enter package directory and build package
 	debuild -uc -us
 
 
-## Build Sensor Package
-On a raspberry pi, install build dependencies
+## Build Environmental Sensor Package
+Install build dependencies
 
-	sudo apt-get -y install devscripts debhelper libbesic2 libpigpio1 libbesic2-dev libpigpio-dev
+	sudo apt-get -y install devscripts debhelper libbesic-dev libpigpio-dev
 
 Then enter package directory and build package
 
 	cd envsense
+	debuild -uc -us
+
+
+## Build Null Sensor Package
+Install build dependencies
+
+	sudo apt-get -y install devscripts debhelper libbesic-dev
+
+Then enter package directory and build package
+
+	cd nullsense
+	debuild -uc -us
+
+
+## Build Dummy CSV Package
+Install build dependencies
+
+	sudo apt-get -y install devscripts debhelper libbesic-dev
+
+Then enter package directory and build package
+
+	cd dummy-csvs
 	debuild -uc -us
